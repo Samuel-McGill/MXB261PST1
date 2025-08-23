@@ -28,7 +28,7 @@ function heights = simulate_biased_walk(N, P, s, w, e)
             % Try to pick a direction until a valid lateral move occurs,
             % or attempt South (which may deposit if blocked).
             while true
-                d = pick_dir(s, w, e);  % 'S' 'W' 'E'
+                d = pick_direction(s, w, e);  % 'S' 'W' 'E'
 
                 if d == 'S'
                     % If south cell occupied OR we are at bottom, stop
