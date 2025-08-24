@@ -4,7 +4,7 @@ function [sizes, meanKL, seKL, ex_empirical] = kl_sampling(lambda, sizes, reps, 
 
     k = 0:kmax;
     true_p = exp(-lambda) * (lambda.^k) ./ factorial(k);
-    true_p = true_p / sum(true_p);   % renormalise after truncation
+    true_p = true_p / sum(true_p);
 
     nS = numel(sizes);
     KLs = nan(reps, nS);
@@ -14,12 +14,11 @@ function [sizes, meanKL, seKL, ex_empirical] = kl_sampling(lambda, sizes, reps, 
         n = sizes(j);
         for r = 1:reps
             xx = sample_truncated_poisson(n, lambda, kmax);
-            counts = histcounts(xx, -0.5:1:(kmax+0.5));   % length kmax+1
+            counts = histcounts(xx, -0.5:1:(kmax+0.5));
             emp = counts / n;
-            emp = max(emp, 1e-10);                        % avoid log(0)
-            KLs(r, j) = sum(true_p .* log(true_p ./ emp));% D_KL(true || emp)
+            emp = max(emp, 1e-10);
+            KLs(r, j) = sum(true_p .* log(true_p ./ emp));
         end
-        % store one example empirical pmf (first run)
         ex_empirical(j, :) = emp;
     end
 

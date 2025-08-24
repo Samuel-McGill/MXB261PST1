@@ -1,4 +1,4 @@
-% PART 1 driver: generates the 4 required figures (each 2x2 across cases i–iv)
+% Generates the 4 required figures (each 2x2 across cases i–iv)
 
 clear; clc; close all;
 
@@ -9,7 +9,7 @@ cases = { ...
    struct('s',3/5,'w',1/10,'e',3/10,'name','(iv) s=3/5,w=1/10,e=3/10') ...
 };
 
-L = 99; bins = 99; edges = 0.5:1:99.5;  % 99 "bins" = columns
+L = 99; bins = 99; edges = 0.5:1:99.5;
 
 make_fig('P=1, N=100',   '1',   100, cases, edges);
 make_fig('P=1, N=200',   '1',   200, cases, edges);
@@ -23,8 +23,6 @@ function make_fig(supt, P, N, cases, edges)
         nexttile;
         c = cases{k};
         heights = simulate_biased_walk(N, P, c.s, c.w, c.e);
-
-        % "Histogram with 99 bins (each column)": use BinCounts to map exactly
         histogram('BinEdges', edges, 'BinCounts', heights);
         xlim([0.5 99.5]);
         xlabel('Column'); ylabel('Height (cells)');

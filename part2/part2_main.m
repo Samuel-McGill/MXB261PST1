@@ -1,22 +1,22 @@
-% PART 2 driver: runs experiments and creates both required figures.
+% Runs experiments and creates both required figures.
 
 clear; clc; close all;
 
 lambda = 4;
-kmax   = 15;                       % truncate to 0..15
-sizes  = [10 25 50 100 175 250];   % sample sizes
-reps   = 100;                      % experiments per size
+kmax   = 15;
+sizes  = [10 25 50 100 175 250];
+reps   = 100;
 
 [sizes, meanKL, seKL, ex_emp] = kl_sampling(lambda, sizes, reps, kmax);
 
-% Fig A: mean KL vs n with SE error bars
+% Figure 1: mean KL vs n with SE error bars
 figure('Color','w','Name','KL vs sample size');
 errorbar(sizes, meanKL, seKL, 'o-','LineWidth',1.2,'MarkerSize',6);
 xlabel('Sample size n'); ylabel('Mean D_{KL}(true || empirical)');
 title('Part 2 – KL divergence vs sample size (mean \pm SE)');
 grid on;
 
-% Fig B: 2x3 subplots: true PMF vs example empirical for each n
+% Figure 2: 2x3 subplots: true PMF vs example empirical for each n
 k = 0:kmax;
 true_p = exp(-lambda) * (lambda.^k) ./ factorial(k);
 true_p = true_p / sum(true_p);

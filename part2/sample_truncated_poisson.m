@@ -4,7 +4,7 @@ function x = sample_truncated_poisson(n, lambda, kmax)
 
     k = 0:kmax;
     pmf = exp(-lambda) * (lambda.^k) ./ factorial(k);
-    pmf = pmf / sum(pmf);           % renormalise after truncation
+    pmf = pmf / sum(pmf);
     cdf = cumsum(pmf);
 
     u = rand(1, n);

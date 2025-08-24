@@ -6,58 +6,50 @@ function heights = simulate_biased_walk(N, P, s, w, e)
 % s,w,e: move probabilities for South, West, East (sum to 1)
 
     rng('shuffle');
-    L = 99;                    % domain size (rows and cols)  % 99×99 per brief
-    occ = false(L, L);         % occupancy grid (row 1 = top)
+    L = 99;
+    occ = false(L, L);
 
     for p = 1:N
-        row = 1;                                    % start top row
+        row = 1;
         if isequal(P, '1')
-            col = 50;                               % fixed start col
+            col = 50;
         else
-            col = randi(L);                         % random start col
+            col = randi(L);
         end
 
         alive = true;
         while alive
-            % If at bottom, particle stops here (deposits at current cell)
             if row == L
                 occ(row, col) = true;
                 break;
             end
-
-            % Try to pick a direction until a valid lateral move occurs,
-            % or attempt South (which may deposit if blocked).
             while true
-                d = pick_direction(s, w, e);  % 'S' 'W' 'E'
+                d = pick_direction(s, w, e);
 
                 if d == 'S'
-                    % If south cell occupied OR we are at bottom, stop
                     if row == L || occ(row+1, col)
-                        occ(row, col) = true;  % deposit here
+                        occ(row, col) = true;
                         alive = false;
                     else
-                        row = row + 1;         % move down
+                        row = row + 1;
                     end
-                    break;                     % exit inner choose-direction loop
+                    break;
                 elseif d == 'W'
-                    nc = col - 1; if nc < 1, nc = L; end  % wrap-around
+                    nc = col - 1; if nc < 1, nc = L; end
                     if ~occ(row, nc)
-                        col = nc;              % move west
+                        col = nc;
                         break;
                     end
-                    % else choose again
-                else % 'E'
-                    nc = col + 1; if nc > L, nc = 1; end  % wrap-around
+                else
+                    nc = col + 1; if nc > L, nc = 1; end
                     if ~occ(row, nc)
-                        col = nc;              % move east
+                        col = nc;
                         break;
                     end
-                    % else choose again
                 end
             end
         end
     end
 
-    % Column "height" = number of occupied cells in that column
     heights = sum(occ, 1);
 end
